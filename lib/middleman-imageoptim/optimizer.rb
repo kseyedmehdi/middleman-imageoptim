@@ -61,7 +61,7 @@ module Middleman
 
       def file_updated?(file_path)
         return true unless options.manifest
-        File.mtime(file_path) != manifest.resource(file_path)
+        Digest::SHA2.hexdigest(File.read(file_path)) != manifest.resource(file_path)
       end
 
       def preoptimize_modes(images)

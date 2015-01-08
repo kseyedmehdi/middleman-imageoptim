@@ -10,12 +10,12 @@ end
 
 Then(/^the manifest should have the right timestamp for "(.*?)"$/) do |file|
   manifest = YAML.load(File.read(manifest_path))
-  file_stamp = File.mtime(File.join(current_dir, file))
+  file_stamp = Digest::SHA2.hexdigest(File.read(File.join(current_dir, file)))
   expect(manifest[file]).to eql(file_stamp)
 end
 
 Given(/^a primed manifest for "(.*?)"$/) do |file|
-  manifest = { file: File.mtime(File.join(current_dir, file)) }
+  manifest = { file: Digest::SHA2.hexdigest(File.read(File.join(current_dir, file))) }
   File.open(path, 'w') do |manifest_file|
     manifest_file.write(YAML.dump(manifest))
   end

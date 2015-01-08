@@ -37,7 +37,7 @@ module Middleman
 
       def build(resources)
         resources.inject({}) do |new_manifest, resource|
-          new_manifest[resource.to_s] = File.mtime(resource)
+          new_manifest[resource.to_s] = Digest::SHA2.hexdigest(File.read(resource))
           new_manifest
         end
       end
